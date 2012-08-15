@@ -6,15 +6,15 @@
   (:require [clojure.string :as string])
   (:import java.util.UUID))
 
-(defn not_found
+(defn not-found
   ([request]
   (let [message "This is not the page you are looking for."]
-    (not_found request (generate-string {:error message}))))
+    (not-found request (generate-string {:error message}))))
   ([request body]
   {:status 404 :body body}))
 
 (defn favicon [request]
-  (not_found request ""))
+  (not-found request ""))
 
 (defn pong [request]
   (Thread/sleep (rand-int 100))
@@ -36,7 +36,7 @@
   (let [id (last (string/split (:uri request) #"/"))]
     (let [body (fetch id)]
       (if (nil? body)
-        (not_found request "")
+        (not-found request "")
         {:status 200
          :body (generate-string body)}))))
 
@@ -61,8 +61,8 @@
          (get-contact request)
        :delete
          (delete-contact request)
-       (not_found request))
-   (not_found request)))
+       (not-found request))
+   (not-found request)))
 
 (def api
   (-> #'router

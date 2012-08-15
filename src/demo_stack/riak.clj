@@ -1,5 +1,6 @@
 (ns demo_stack.riak
-  (:use demo_stack.graphite)
+  (:use demo_stack.logger
+        demo_stack.graphite)
   (:require [clojurewerkz.welle.core :as wc]
             [clojurewerkz.welle.buckets :as wb]
             [clojurewerkz.welle.kv :as kv])
@@ -8,19 +9,23 @@
 (wc/connect!)
 (wb/create "demo_stack")
 
+(defn- record-operation [operation key time]
+  (log "riak :%s %s (%dms)" operation key time)
+  (metric (format "api.riak.%s.time" operation) time))
+
 (defn store [key value]
   (let [start (System/currentTimeMillis)
         _ (kv/store "demo_stack" key value :content-type Constants/CTYPE_JSON_UTF8)
         finish (System/currentTimeMillis)
         time (- finish start)]
-    (metric "api.riak.store.time" time)))
+    (record-operation "store" key time)))
 
 (defn fetch [key]
   (let [start (System/currentTimeMillis)
         [response] (kv/fetch "demo_stack" key)
         finish (System/currentTimeMillis)
         time (- finish start)]
-    (metric "api.riak.fetch.time" time)
+    (record-operation "fetch" key time)
     (:value response)))
 
 (defn delete [key]
@@ -28,4 +33,4 @@
         _ (kv/delete "demo_stack" key)
         finish (System/currentTimeMillis)
         time (- finish start)]
-    (metric "api.riak.delete.time" time)))
+    (record-operation "delete" key time)))

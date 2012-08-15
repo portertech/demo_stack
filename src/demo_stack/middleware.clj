@@ -26,11 +26,12 @@
     (let [response (handler request)]
       (assoc-in response [:headers "Content-Type"] "application/json"))))
 
-(defn request-metrics [raw-method raw-uri status time]
-  (let [method (subs (str raw-method) 1)
-        uri (string/replace (subs raw-uri 1) #"[^\w.-]" "_")]
-    (metric (format "api.request.%s.%s.time" method uri) time)
-    (metric (format "api.request.%s.%d" method status) 1)))
+(defn- record-request [method uri status time]
+  (log "request %s %s %d (%dms)" method uri status time)
+  (let [filtered_method (subs (str method) 1)
+        filtered_uri (string/replace (subs uri 1) #"[^\w.-]" "_")]
+    (metric (format "api.request.%s.%s.time" filtered_method filtered_uri) time)
+    (metric (format "api.request.%s.%d" filtered_method status) 1)))
 
 (defn wrap-request-logging [handler]
   (fn [request]
@@ -38,6 +39,5 @@
           response (handler request)
           finish (System/currentTimeMillis)
           time (- finish start)]
-      (log "request %s %s %d (%dms)" (:request-method request) (:uri request) (:status response) time)
-      (request-metrics (:request-method request) (:uri request) (:status response) time)
+      (record-request (:request-method request) (:uri request) (:status response) time)
       response)))
