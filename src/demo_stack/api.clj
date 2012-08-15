@@ -42,7 +42,7 @@
 
 (defn delete-contact [request]
   (let [id (last (string/split (:uri request) #"/"))]
-    (destroy id)
+    (delete id)
     {:status 204 :body ""}))
 
 (defn router [request]

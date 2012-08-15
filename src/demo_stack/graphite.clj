@@ -2,7 +2,7 @@
   (:use demo_stack.logger)
   (:require [clj-stacktrace.repl :as stacktrace]
             [clojure.java.io :as io])
-  (import [java.net Socket]))
+  (:import [java.net Socket]))
 
 (defn- write-metric [name value timestamp]
   (try
