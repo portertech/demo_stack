@@ -17,10 +17,9 @@
   (not-found request ""))
 
 (defn pong [request]
-  (Thread/sleep (rand-int 100))
+  (ping-riak)
   {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "pong"})
+   :body (generate-string {:message "pong"})})
 
 (defn self-destruct [request]
   (throw (Exception. "self destruction!")))

@@ -9,6 +9,9 @@
 (wc/connect!)
 (wb/create "demo_stack")
 
+(defn ping-riak []
+  (wc/ping))
+
 (defn- record-operation [operation key time]
   (log "riak :%s %s (%dms)" operation key time)
   (metric (format "api.riak.%s.time" operation) time))
