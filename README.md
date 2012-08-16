@@ -16,7 +16,7 @@ necessary evil, providing a way to measure what code does when it
 runs, in production. Knowing application dependencies, understanding
 their relationships, and monitoring all the way down to the system
 resources they consume is a MUST. Nothing beats a functional
-check. There is not one tool to rule them all, think unix toolchain,
+check. There is not one tool to rule them all, think unix toolchain;
 Logstash, Collectd, Sensu, Graphite, and Gdash. Visibility is
 important, dashboards are *good as people can recognize *patterns.
 
