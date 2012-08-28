@@ -25,6 +25,8 @@ end
 # eg. node.sensu.client.foo = "bar"
 # eg. gem_package "spice"
 
+gem_package "carrier-pigeon"
+
 cookbook_file "/usr/local/bin/sensu-stdin-metrics-client.rb" do
   mode "755"
 end

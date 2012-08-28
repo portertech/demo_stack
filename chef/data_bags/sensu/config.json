@@ -19,7 +19,7 @@
   "checks": {
     "check_zombies": {
       "notification": "zombie processes piling up",
-      "command": "check-procs -s Z -w 5 -c 10",
+      "command": "check-procs.rb -s Z -w 5 -c 10",
       "subscribers": [
         "sensu_client"
       ],
@@ -27,7 +27,7 @@
     },
     "check_sshd": {
       "notification": "sshd daemon is not running.",
-      "command": "check-procs -p '/usr/sbin/sshd' -C 1",
+      "command": "check-procs.rb -p '/usr/sbin/sshd' -C 1",
       "subscribers": [
         "openssh"
       ],
@@ -35,7 +35,7 @@
     },
     "check_mtime_chef": {
       "notification": "chef-client has not run for over 5 hours",
-      "command": "check-mtime -f /var/log/chef/chef-client.log -w 14400 -c 18000",
+      "command": "check-mtime.rb -f /var/log/chef/chef-client.log -w 14400 -c 18000",
       "subscribers": [
         "chef-client::cron"
       ],
@@ -43,7 +43,7 @@
     },
     "check_tail_chef": {
       "notification": "chef-client encountered an error",
-      "command": "check-tail -f /var/log/chef/chef-client.log -P FATAL -w",
+      "command": "check-tail.rb -f /var/log/chef/chef-client.log -P FATAL -w",
       "subscribers": [
         "chef-client::cron"
       ],
