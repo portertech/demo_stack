@@ -17,7 +17,7 @@
    with Echelon.
 
 ** chef cookbooks
-   Echelon uses Chef search in several ares to integrate components. This
+   Echelon uses Chef search in several areas to integrate components. This
    will not be available when using vagrant and chef-solo to experiment.
    Besides various cookbook dependencies, the following Chef cookbooks
    are used:
@@ -27,10 +27,6 @@
     at [[https://github.com/sensu/sensu-chef]] with minor modifications to
     deliver the sensu-stdin-metrics client used for sending metrics to
     graphite via the local sensu socket.
-*** collectd and collectd_plugins
-    Collectd is used for simple system statistics collection. These
-    cookbooks setup the core of collectd  and plugins used for
-    gathering system data and writing to graphite.
 *** graphite
     Graphite is the metrics collection system used and allows flexible,
     intelligent metrics gathering. [[http://graphite.readthedocs.org/en/latest/]]
@@ -39,4 +35,3 @@
     bootstrap ( [[https://github.com/ripienaar/gdash]] ). This cookbook
     configures gdash and provides Chef resource that can be used for
     building custom dashboards.
-
