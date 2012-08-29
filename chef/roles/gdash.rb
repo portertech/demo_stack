@@ -5,7 +5,7 @@ run_list [
           "recipe[gdash]",
           "recipe[iptables]",
           "recipe[gdash::firewall]",
-          "recipe[gdash::basic_dashboard]",
+          "recipe[gdash::base_dashboard]",
           "recipe[gdash::graph_generator]"
          ]
 

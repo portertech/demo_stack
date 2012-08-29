@@ -19,6 +19,7 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = "cookbooks"
     chef.roles_path = "roles"
     chef.add_role "echelon"
+    chef.add_role "demo_stack"
     chef.json = {
       :logstash => {
         :agent => {

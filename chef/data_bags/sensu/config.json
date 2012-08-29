@@ -59,18 +59,21 @@
     },
     "cpu_metrics": {
       "type": "metric",
+      "handler": "graphite",
       "command": "cpu-metrics.rb",
       "standalone": true,
       "interval": 10
     },
     "memory_metrics": {
       "type": "metric",
+      "handler": "graphite",
       "command": "memory-metrics.rb",
       "standalone": true,
       "interval": 10
     },
     "disk_metrics": {
       "type": "metric",
+      "handler": "graphite",
       "command": "disk-metrics.rb",
       "standalone": true,
       "interval": 30

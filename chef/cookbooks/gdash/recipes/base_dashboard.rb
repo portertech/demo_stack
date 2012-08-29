@@ -1,13 +1,13 @@
 include_recipe 'gdash'
 
-gdash_dashboard 'Base Metrics' do
-  category 'Basic'
-  description 'Simple dashboard'
+gdash_dashboard 'Carbon Metrics' do
+  category 'Carbon'
+  description 'Graphite Carbon Metrics'
 end
 
-gdash_dashboard_component 'metrics_received' do
-  dashboard_name 'Base Metrics'
-  dashboard_category 'Basic'
+gdash_dashboard_component 'Metrics Received' do
+  dashboard_name 'Carbon Metrics'
+  dashboard_category 'Carbon'
   vtitle 'Items'
   fields(
     :received => {
@@ -18,8 +18,8 @@ gdash_dashboard_component 'metrics_received' do
 end
 
 gdash_dashboard_component 'cpu' do
-  dashboard_name 'Base Metrics'
-  dashboard_category 'Basic'
+  dashboard_name 'Carbon Metrics'
+  dashboard_category 'Carbon'
   fields(
     :cpu => {
       :data => '*.*.*.cpuUsage',
@@ -29,8 +29,8 @@ gdash_dashboard_component 'cpu' do
 end
 
 gdash_dashboard_component 'memory' do
-  dashboard_name 'Base Metrics'
-  dashboard_category 'Basic'
+  dashboard_name 'Carbon Metrics'
+  dashboard_category 'Carbon'
   fields(
     :memory => {
       :data => '*.*.*.memUsage',
