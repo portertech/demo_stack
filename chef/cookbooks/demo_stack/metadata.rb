@@ -7,4 +7,5 @@ version          "0.0.1"
 
 depends "java"
 depends "riak"
+depends "bluepill"
 depends "haproxy"

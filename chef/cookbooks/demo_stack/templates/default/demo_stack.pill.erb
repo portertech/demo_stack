@@ -1,0 +1,12 @@
+Bluepill.application("demo_stack", :log_file => "/var/log/bluepill.log") do |app|
+  app.working_dir = "<%= node.demo_stack.directory %>"
+<% node.demo_stack.ports.each do |port| %>
+  app.process("demo_stack_<%= port %>") do |process|
+    process.uid = "<%= node.demo_stack.user %>"
+    process.stdout = process.stderr = "<%= node.demo_stack.log %>"
+    process.daemonize = true
+    process.start_command = "/usr/bin/env PORT=<%= port %> java -jar demo_stack.jar"
+    process.start_grace_time = 10.seconds
+  end
+<% end %>
+end
