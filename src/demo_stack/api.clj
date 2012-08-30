@@ -71,4 +71,5 @@
     (wrap-request-logging)))
 
 (defn -main []
-  (run-jetty api {:port 3000}))
+  (let [port (Integer/parseInt (get (System/getenv) "PORT" "3030"))]
+    (run-jetty api {:port port})))
