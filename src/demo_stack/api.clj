@@ -4,7 +4,8 @@
         cheshire.core
         ring.adapter.jetty)
   (:require [clojure.string :as string])
-  (:import java.util.UUID))
+  (:import java.util.UUID)
+  (:gen-class))
 
 (defn not-found
   ([request]
