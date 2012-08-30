@@ -1,0 +1,30 @@
+global
+        log 127.0.0.1 local0
+        log 127.0.0.1 local1 notice
+        maxconn 4096
+        user haproxy
+        group haproxy
+
+defaults
+        log global
+        mode http
+        option httplog
+        option dontlognull
+        retries 3
+        option redispatch
+        maxconn 2000
+        contimeout 5000
+        clitimeout 50000
+        srvtimeout 50000
+
+listen application 0.0.0.0:<%= node["haproxy"]["incoming_port"] %>
+  balance  <%= node["haproxy"]["balance_algorithm"] %>
+<% node['haproxy']['member_ports'].each do |port| -%>
+  server localhost 127.0.0.1:<%= port %> weight 1 maxconn <%= node["haproxy"]["member_max_connections"] %> check
+<% end -%>
+
+<% if node["haproxy"]["enable_admin"] -%>
+listen admin 0.0.0.0:22002
+  mode http
+  stats uri /
+<% end -%>
