@@ -1,19 +1,20 @@
 (ns demo_stack.graphite
-  (:use demo_stack.logger)
-  (:require [clj-stacktrace.repl :as stacktrace]
+  (:require [clojure.tools.logging :as log]
             [clojure.java.io :as io])
   (:import [java.net Socket]))
 
+(defn- graphite-host []
+  (get (System/getenv) "GRAPHITE_HOST" "127.0.0.1"))
+
 (defn- write-metric [name value timestamp]
   (try
-    (with-open [socket (Socket. "127.0.0.1" 2003)
-                reader (io/reader (.getInputStream socket))
+    (with-open [socket (Socket. (graphite-host) 2003)
                 writer (io/writer (.getOutputStream socket))]
         (.write writer (format "%s %d %d\n" name value timestamp)))
     (catch Exception error
-      (log "exception:\n%s" (stacktrace/pst-str error)))))
+      (log/error error "failed to write to graphite"))))
 
-(defn now []
+(defn- now []
   (int (/ (System/currentTimeMillis) 1000)))
 
 (defn metric
