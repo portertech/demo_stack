@@ -17,7 +17,7 @@
 (defn- now []
   (int (/ (System/currentTimeMillis) 1000)))
 
-(defn metric
+(defn store
   ([name value]
   (future (write-metric name value (now))))
   ([name value timestamp]

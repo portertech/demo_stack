@@ -1,8 +1,8 @@
 (ns demo_stack.middleware
-  (:use demo_stack.graphite
-        cheshire.core)
   (:require [clojure.tools.logging :as log]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [cheshire.core :as json]
+            [demo_stack.graphite :as graphite]))
 
 (defn wrap-exception-logging [handler]
   (fn [request]
@@ -18,7 +18,7 @@
       (handler request)
       (catch Exception error
         {:status 500
-         :body (generate-string {:error (str error)})}))))
+         :body (json/generate-string {:error (str error)})}))))
 
 (defn wrap-content-type [handler]
   (fn [request]
@@ -29,8 +29,8 @@
   (log/infof "request %s %s %d (%dms)" method uri status time)
   (let [filtered_method (subs (str method) 1)
         filtered_uri (string/replace (subs uri 1) #"[^\w.-]" "_")]
-    (metric (format "api.request.%s.%s.time" filtered_method filtered_uri) time)
-    (metric (format "api.request.%s.%s.%d" filtered_method filtered_uri status) 1)))
+    (graphite/store (format "api.request.%s.%s.time" filtered_method filtered_uri) time)
+    (graphite/store (format "api.request.%s.%s.%d" filtered_method filtered_uri status) 1)))
 
 (defn wrap-request-logging [handler]
   (fn [request]

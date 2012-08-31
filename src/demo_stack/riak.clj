@@ -1,9 +1,9 @@
 (ns demo_stack.riak
-  (:use demo_stack.graphite)
   (:require [clojure.tools.logging :as log]
             [clojurewerkz.welle.core :as wc]
             [clojurewerkz.welle.buckets :as wb]
-            [clojurewerkz.welle.kv :as kv])
+            [clojurewerkz.welle.kv :as kv]
+            [demo_stack.graphite :as graphite])
   (:import com.basho.riak.client.http.util.Constants))
 
 (defn- riak-host []
@@ -13,12 +13,12 @@
 
 (wb/create "demo_stack")
 
-(defn ping-riak []
+(defn ping []
   (wc/ping))
 
 (defn- record-operation [operation key time]
   (log/infof "riak :%s %s (%dms)" operation key time)
-  (metric (format "api.riak.%s.time" operation) time))
+  (graphite/store (format "api.riak.%s.time" operation) time))
 
 (defn store [key value]
   (let [start (System/currentTimeMillis)
