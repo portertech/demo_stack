@@ -27,10 +27,9 @@
 
 (defn- record-request [method uri status time]
   (log/infof "request %s %s %d (%dms)" method uri status time)
-  (let [filtered_method (subs (str method) 1)
-        filtered_uri (string/replace (subs uri 1) #"[^\w.-]" "_")]
-    (graphite/store (format "api.request.%s.%s.time" filtered_method filtered_uri) time)
-    (graphite/store (format "api.request.%s.%s.%d" filtered_method filtered_uri status) 1)))
+  (let [resource (second (string/split uri #"/"))]
+    (graphite/store (format "api.request.%s.%s.time" resource (name method)) time)
+    (graphite/store (format "api.request.%s.%s.%d" resource (name method) status) 1)))
 
 (defn request-logging [handler]
   (fn [request]
