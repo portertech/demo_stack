@@ -9,9 +9,9 @@
 (defn- riak-host []
   (get (System/getenv) "RIAK_HOST" "127.0.0.1"))
 
-(wc/connect-via-pb! (riak-host) 8087)
-
-(wb/create "demo_stack" :n-val 3)
+(defn connect! []
+  (wc/connect-via-pb! (riak-host) 8087)
+  (wb/create "demo_stack" :n-val 3))
 
 (defn ping []
   (wc/ping))

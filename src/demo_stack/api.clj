@@ -1,8 +1,8 @@
 (ns demo_stack.api
-  (:use demo_stack.middleware
-        ring.adapter.jetty)
+  (:use ring.adapter.jetty)
   (:require [clojure.string :as string]
             [cheshire.core :as json]
+            [demo_stack.middleware :as middleware]
             [demo_stack.riak :as riak])
   (:import java.util.UUID)
   (:gen-class))
@@ -78,11 +78,14 @@
 
 (def api
   (-> #'router
-    (wrap-exception-logging)
-    (wrap-failsafe)
-    (wrap-content-type)
-    (wrap-request-logging)))
+    (middleware/exception-logging)
+    (middleware/failsafe)
+    (middleware/content-type)
+    (middleware/request-logging)))
+
+(defn port []
+  (Integer/parseInt (get (System/getenv) "PORT" "3000")))
 
 (defn -main []
-  (let [port (Integer/parseInt (get (System/getenv) "PORT" "3000"))]
-    (run-jetty api {:port port})))
+  (riak/connect!)
+  (run-jetty api {:port (port)}))
