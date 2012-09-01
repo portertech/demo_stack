@@ -10,7 +10,7 @@
   (try
     (with-open [socket (Socket. (graphite-host) 2003)
                 writer (io/writer (.getOutputStream socket))]
-        (.write writer (format "%s %d %d\n" name value timestamp)))
+      (.write writer (format "%s %d %d\n" name value timestamp)))
     (catch Exception error
       (log/error error "failed to write to graphite"))))
 
