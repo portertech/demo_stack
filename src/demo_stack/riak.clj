@@ -11,7 +11,7 @@
 
 (wc/connect-via-pb! (riak-host) 8087)
 
-(wb/create "demo_stack")
+(wb/create "demo_stack" :n-val 3)
 
 (defn ping []
   (wc/ping))
@@ -22,14 +22,14 @@
 
 (defn store [key value]
   (let [start (System/currentTimeMillis)
-        _ (kv/store "demo_stack" key value :content-type Constants/CTYPE_JSON_UTF8)
+        _ (kv/store "demo_stack" key value :content-type Constants/CTYPE_JSON_UTF8 :w 2)
         finish (System/currentTimeMillis)
         time (- finish start)]
     (record-operation "store" key time)))
 
 (defn fetch [key]
   (let [start (System/currentTimeMillis)
-        [response] (kv/fetch "demo_stack" key)
+        [response] (kv/fetch "demo_stack" key :r 2)
         finish (System/currentTimeMillis)
         time (- finish start)]
     (record-operation "fetch" key time)

@@ -26,19 +26,29 @@
   (throw (Exception. "BOOM!")))
 
 (defn create-contact [request]
-  (let [details (json/parse-string (slurp (:body request)) true)
-        id (str (UUID/randomUUID))]
+  (let [id (str (UUID/randomUUID))
+        details (json/parse-string (slurp (:body request)) true)]
     (riak/store id details)
     {:status 201
      :body (json/generate-string {:id id})}))
 
 (defn get-contact [request]
-  (let [id (last (string/split (:uri request) #"/"))]
-    (let [details (riak/fetch id)]
-      (if (nil? details)
-        (not-found request "")
-        {:status 200
-         :body (json/generate-string details)}))))
+  (let [id (last (string/split (:uri request) #"/"))
+        details (riak/fetch id)]
+    (if (nil? details)
+      (not-found request "")
+      {:status 200
+       :body (json/generate-string details)})))
+
+(defn update-contact [request]
+  (let [id (last (string/split (:uri request) #"/"))
+        old_details (riak/fetch id)
+        details (json/parse-string (slurp (:body request)) true)]
+    (riak/store id details)
+    (if (nil? old_details)
+    {:status 201
+     :body (json/generate-string {:id id})}
+    {:status 200 :body ""})))
 
 (defn delete-contact [request]
   (let [id (last (string/split (:uri request) #"/"))]
@@ -59,6 +69,8 @@
          (create-contact request)
        :get
          (get-contact request)
+       :put
+         (update-contact request)
        :delete
          (delete-contact request)
        (not-found request))
