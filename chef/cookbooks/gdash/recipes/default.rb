@@ -19,9 +19,7 @@
 include_recipe "build-essential"
 include_recipe "unicorn"
 
-%w[libcurl4-gnutls-dev ruby1.9.1-full].each do |pkg|
-  apt_package pkg
-end
+package "libcurl4-gnutls-dev"
 
 gem_package "bundler"
 

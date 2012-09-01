@@ -16,6 +16,10 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 9292, 9292
   config.vm.forward_port 2345, 2345
   config.vm.forward_port 22002, 22002
+
+  config.vm.provision :shell, :inline => "apt-get update"
+  config.vm.provision :shell, :inline => "apt-get install -y ruby1.9.3"
+
   config.vm.provision :chef_solo do |chef|
     chef.data_bags_path = "data_bags"
     chef.cookbooks_path = "cookbooks"
