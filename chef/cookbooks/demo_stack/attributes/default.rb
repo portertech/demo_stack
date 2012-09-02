@@ -8,3 +8,5 @@ override.bluepill.bin = "/usr/local/bin/bluepill"
 
 override.haproxy.incoming_port = 2345
 override.haproxy.member_ports = demo_stack.ports
+
+default.demo_stack.simulate.log = "/var/log/simulate.log"

@@ -7,8 +7,6 @@ run_list [
           "recipe[sensu::server]",
           "recipe[sensu::api]",
           "recipe[sensu::dashboard]",
-          "recipe[iptables]",
-          "recipe[sensu::firewall]",
           "role[sensu_client]"
          ]
 

@@ -7,6 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
+%w[emacs curl htop].each do |pkg|
+  package pkg
+end
+
 include_recipe "riak"
 include_recipe "java"
 include_recipe "bluepill"
@@ -54,3 +58,26 @@ bluepill_service "demo_stack" do
 end
 
 include_recipe "haproxy"
+
+gem_package "rest-client"
+
+cookbook_file File.join(node.demo_stack.directory, "simulate.rb") do
+  mode 0755
+end
+
+directory File.dirname(node.demo_stack.simulate.log) do
+  recursive true
+  mode 0755
+end
+
+file node.demo_stack.simulate.log do
+  owner node.demo_stack.user
+  backup false
+  mode 0755
+end
+
+template "/etc/bluepill/simulate.pill"
+
+bluepill_service "simulate" do
+  action [:enable, :load, :start]
+end

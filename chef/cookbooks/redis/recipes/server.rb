@@ -49,7 +49,3 @@ end
 service "redis" do
   action :start
 end
-
-unless Chef::Config['solo']
-  include_recipe "redis::iptables"
-end

@@ -1,0 +1,9 @@
+Bluepill.application("simulate", :log_file => "/var/log/bluepill.log") do |app|
+  app.working_dir = "<%= node.demo_stack.directory %>"
+  app.process("simulate_1") do |process|
+    process.uid = "<%= node.demo_stack.user %>"
+    process.stdout = process.stderr = "<%= node.demo_stack.simulate.log %>"
+    process.daemonize = true
+    process.start_command = "./simulate.rb"
+  end
+end

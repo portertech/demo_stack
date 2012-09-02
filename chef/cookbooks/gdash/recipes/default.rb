@@ -137,9 +137,22 @@ execute "gdash: untar" do
   notifies :run, resources(:execute => "bundle"), :immediately
 end
 
+if Chef::Config[:solo]
+  graphite_url = node.gdash.graphite_url
+else
+  graphite_results = search(:node, "roles:#{node.gdash.graphite_role} AND chef_environment:#{node.chef_environment}")
+
+  unless graphite_results.empty?
+    graphite_url = "http://#{graphite_results[0]["cloud"]["public_hostname"]}:#{node.graphite.listen_port}"
+  else
+    graphite_url = node.gdash.graphite_url
+  end
+end
+
 template ::File.join(node.gdash.base, "config", "gdash.yaml") do
   owner "www-data"
   group "www-data"
+  variables(:graphite_url => graphite_url)
   notifies :restart, "service[gdash]"
 end
 
