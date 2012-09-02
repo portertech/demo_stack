@@ -57,10 +57,10 @@
       ],
       "interval": 60
     },
-    "cpu_metrics": {
+    "cpu_usage_metrics": {
       "type": "metric",
       "handler": "graphite",
-      "command": "cpu-metrics.rb",
+      "command": "cpu-usage-metrics.sh",
       "standalone": true,
       "interval": 10
     },
@@ -77,6 +77,13 @@
       "command": "disk-metrics.rb",
       "standalone": true,
       "interval": 30
+    },
+    "disk_capacity_metrics": {
+      "type": "metric",
+      "handler": "graphite",
+      "command": "disk-capacity-metrics.rb",
+      "standalone": true,
+      "interval": 60
     }
   },
   "irc": {

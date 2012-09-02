@@ -1,13 +1,36 @@
 include_recipe "gdash"
 
-gdash_dashboard "Demo Stack" do
-  category "Application"
-  description "Application Metrics"
+gdash_dashboard "CPU" do
+  category "System"
+  description "System CPU Metrics"
 end
 
 gdash_dashboard "Memory" do
   category "System"
   description "System Memory Metrics"
+end
+
+gdash_dashboard "Disk" do
+  category "System"
+  description "System Disk Metrics"
+end
+
+gdash_dashboard "Demo Stack" do
+  category "Application"
+  description "Application Metrics"
+end
+
+gdash_dashboard_component "cpu_usage" do
+  dashboard_name "CPU"
+  dashboard_category "System"
+  ymin 0
+  vtitle "% Utilized"
+  fields(
+    :usage => {
+      :data => "*.cpu.usage",
+      :alias => "CPU Usage"
+    }
+  )
 end
 
 gdash_dashboard_component "free_memory" do
@@ -54,6 +77,19 @@ gdash_dashboard_component "buffers_and_cached" do
   )
 end
 
+gdash_dashboard_component "disk_usage" do
+  dashboard_name "Disk"
+  dashboard_category "System"
+  ymin 0
+  vtitle "% Used"
+  fields(
+    :usage => {
+      :data => "*.disk.*.capacity",
+      :alias => "Disk Usage"
+    }
+  )
+end
+
 gdash_dashboard_component "requests_per_minute" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
@@ -74,31 +110,71 @@ gdash_dashboard_component "requests_per_minute" do
   )
 end
 
+gdash_dashboard_component "average_request_time" do
+  dashboard_name "Demo Stack"
+  dashboard_category "Application"
+  ymin 0
+  vtitle "Time (ms)"
+  area :all
+  fields(
+    :average => {
+      :data => "averageSeries(api.request.*.*.time)",
+      :alias => "Average Response Time"
+    }
+  )
+end
+
 gdash_dashboard_component "request_time" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
   vtitle "Time (ms)"
-  draw_null_as_zero true
   area :all
   fields(
-    "Contacts.POST" => {
-      :data => "api.request.contacts.post.time"
+    :contacts_post => {
+      :data => "api.request.contacts.post.time",
+      :alias => "Contacts POST"
     },
-    "contacts.GET" => {
-      :data => "api.request.contacts.get.time"
+    :contacts_get => {
+      :data => "api.request.contacts.get.time",
+      :alias => "Contacts GET"
     },
-    "Contacts.PUT" => {
-      :data => "api.request.contacts.put.time"
+    :contacts_put => {
+      :data => "api.request.contacts.put.time",
+      :alias => "Contacts PUT"
     },
-    "Contacts.DELETE" => {
-      :data => "api.request.contacts.delete.time"
+    :ping_get => {
+      :data => "api.request.ping.get.time",
+      :alias => "Ping GET"
     },
-    "Ping.GET" => {
-      :data => "api.request.ping.get.time"
+    :contacts_delete => {
+      :data => "api.request.contacts.delete.time",
+      :alias => "Contacts DELETE"
     },
-    "Fail.GET" => {
-      :data => "api.request.fail.get.time"
+    :fail_get => {
+      :data => "api.request.fail.get.time",
+      :alias => "Fail GET"
+    }
+  )
+end
+
+gdash_dashboard_component "riak_operation_time" do
+  dashboard_name "Demo Stack"
+  dashboard_category "Application"
+  ymin 0
+  vtitle "Time (ms)"
+  fields(
+    :store => {
+      :data => "api.riak.store.time",
+      :alias => "Riak STORE"
+    },
+    :fetch => {
+      :data => "api.riak.fetch.time",
+      :alias => "Riak FETCH"
+    },
+    :delete => {
+      :data => "api.riak.delete.time",
+      :alias => "Riak DELETE"
     }
   )
 end
