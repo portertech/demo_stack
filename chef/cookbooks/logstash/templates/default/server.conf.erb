@@ -25,7 +25,14 @@ filter {
       <% filter.each do |name,hash| -%>
          <%= name %> {
            <% hash.each do |k,v| -%>
-             <%= k %> => "<%= v %>"
+             <% case v.class.to_s -%>
+             <% when "String" -%>
+               <%= k %> => "<%= v %>"
+             <% when "Array" -%>
+               <%= k %> => ["<%= v.join('", "') %>"]
+             <% else -%>
+               <%= k %> => <%= v %>
+             <% end -%>
            <% end -%>
       <% end -%>
               }
