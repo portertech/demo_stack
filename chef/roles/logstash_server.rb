@@ -4,21 +4,3 @@ run_list [
           "recipe[logstash::server]",
           "recipe[logstash::kibana]"
          ]
-
-override_attributes :logstash => {
-  :server => {
-    :inputs => [
-      :tcp => {
-        :type => "tcp-input",
-        :port => "5959",
-        :format => "json_event"
-      },
-      :file => {
-        :type => "sample-logs",
-        :path => "/var/log/*.log",
-        :exclude => "*.gz",
-        :debug => true
-      }
-    ]
-  }
-}

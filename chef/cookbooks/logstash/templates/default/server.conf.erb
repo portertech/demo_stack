@@ -5,13 +5,13 @@ input {
     port => "5959"
     format => "json_event"
   }
-  <% else %>    
+  <% else %>
     <% node['logstash']['server']['inputs'].each do |input| -%>
-     
-        <% input.each do |name,hash| -%> 
+
+        <% input.each do |name,hash| -%>
              <%= name %> {
-                 <% hash.each do |k,v| -%>         
-                       <%= k %> => '<%= v %>'
+                 <% hash.each do |k,v| -%>
+                       <%= k %> => "<%= v %>"
                  <% end -%>
         }
         <% end -%>
@@ -22,10 +22,10 @@ input {
 <% unless  node['logstash']['server']['filters'].empty? -%>
 filter {
    <% node['logstash']['server']['filters'].each do |filter| -%>
-      <% filter.each do |name,hash| -%> 
+      <% filter.each do |name,hash| -%>
          <%= name %> {
-           <% hash.each do |k,v| -%>         
-             <%= k %> => '<%= v %>'
+           <% hash.each do |k,v| -%>
+             <%= k %> => "<%= v %>"
            <% end -%>
       <% end -%>
               }
@@ -47,21 +47,21 @@ output {
 
   <% unless  node['logstash']['server']['outputs'].empty? -%>
       <% node['logstash']['server']['outputs'].each do |output| -%>
-        <% output.each do |name,hash| -%> 
+        <% output.each do |name,hash| -%>
              <%= name %> {
-                 <% hash.each do |k,v| -%>         
+                 <% hash.each do |k,v| -%>
                     <% case v.class.to_s -%>
                     <% when "String" -%>
-                       <%= k %> => '<%= v %>'
+                       <%= k %> => "<%= v %>"
                     <% when "Array" -%>
                        <%= k %> => <%= v.inspect %>
                     <% when "Trueclass", "FalseClass", "Fixnum" -%>
-                       <%= k %> => <%= v %>                    
+                       <%= k %> => <%= v %>
                     <% end -%>
                  <% end -%>
-                   }    
+                   }
         <% end -%>
-            
+
       <% end -%>
   <% end -%>
 
