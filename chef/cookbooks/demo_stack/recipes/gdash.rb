@@ -15,9 +15,19 @@ gdash_dashboard "Disk" do
   description "System Disk Metrics"
 end
 
+gdash_dashboard "Chef Metrics" do
+  category "Chef"
+  description "Chef and Deployment Metrics"
+end
+
 gdash_dashboard "Demo Stack" do
   category "Application"
   description "Application Metrics"
+end
+
+gdash_dashboard "Logstash Metrics" do
+  category "Logstash"
+  description "Logstash Metrics"
 end
 
 gdash_dashboard_component "cpu_usage" do
@@ -90,7 +100,21 @@ gdash_dashboard_component "disk_usage" do
   )
 end
 
-gdash_dashboard_component "requests_per_minute" do
+gdash_dashboard_component "a_average_response_time" do
+  dashboard_name "Demo Stack"
+  dashboard_category "Application"
+  ymin 0
+  vtitle "Time (ms)"
+  area :all
+  fields(
+    :average => {
+      :data => "averageSeries(api.request.*.*.time)",
+      :alias => "Average Response Time"
+    }
+  )
+end
+
+gdash_dashboard_component "b_requests_per_minute" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
@@ -110,21 +134,28 @@ gdash_dashboard_component "requests_per_minute" do
   )
 end
 
-gdash_dashboard_component "average_request_time" do
+gdash_dashboard_component "c_riak_operation_time" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
   vtitle "Time (ms)"
-  area :all
   fields(
-    :average => {
-      :data => "averageSeries(api.request.*.*.time)",
-      :alias => "Average Response Time"
+    :store => {
+      :data => "api.riak.store.time",
+      :alias => "Riak STORE"
+    },
+    :fetch => {
+      :data => "api.riak.fetch.time",
+      :alias => "Riak FETCH"
+    },
+    :delete => {
+      :data => "api.riak.delete.time",
+      :alias => "Riak DELETE"
     }
   )
 end
 
-gdash_dashboard_component "request_time" do
+gdash_dashboard_component "d_response_time" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
@@ -158,23 +189,35 @@ gdash_dashboard_component "request_time" do
   )
 end
 
-gdash_dashboard_component "riak_operation_time" do
+gdash_dashboard_component "e_riak_operation_time" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
   vtitle "Time (ms)"
   fields(
     :store => {
-      :data => "api.riak.store.time",
-      :alias => "Riak STORE"
+      :data => "logstash.demo_stack.riak.store.time",
+      :alias => "(LOG) Riak STORE"
     },
     :fetch => {
-      :data => "api.riak.fetch.time",
-      :alias => "Riak FETCH"
+      :data => "logstash.demo_stack.riak.fetch.time",
+      :alias => "(LOG) Riak FETCH"
     },
     :delete => {
-      :data => "api.riak.delete.time",
-      :alias => "Riak DELETE"
+      :data => "logstash.demo_stack.riak.delete.time",
+      :alias => "(LOG) Riak DELETE"
+    }
+  )
+end
+
+gdash_dashboard_component "logstash_events" do
+  dashboard_name "Logstash Metrics"
+  dashboard_category "Logstash"
+  vtitle "Items"
+  fields(
+    :received => {
+      :data => "summarize(logstash.events, '1min')",
+      :alias => "Events Received"
     }
   )
 end

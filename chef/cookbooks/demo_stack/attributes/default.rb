@@ -73,3 +73,12 @@ override.logstash.server.filters = [
     }
   }
 ]
+
+override.logstash.server.outputs = [
+  {
+    :graphite => {
+      :fields => ["riak_operation", "riak_time"],
+      :metrics => ["logstash.%{@type}.riak.%{riak_operation}.time", "%{riak_time}"]
+    }
+  }
+]
