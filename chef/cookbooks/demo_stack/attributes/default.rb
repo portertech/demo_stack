@@ -6,6 +6,7 @@ default.demo_stack.ports = [4000, 4001]
 
 override.bluepill.bin = "/usr/local/bin/bluepill"
 
+override.haproxy.service_name = "demo_stack"
 override.haproxy.incoming_port = 2345
 override.haproxy.member_ports = demo_stack.ports
 

@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['haproxy']['service_name'] = "application"
 default['haproxy']['incoming_port'] = 80
 default['haproxy']['member_port'] = 8080
 default['haproxy']['member_ports'] = [8080]

@@ -17,7 +17,7 @@ defaults
         clitimeout 50000
         srvtimeout 50000
 
-listen application 0.0.0.0:<%= node["haproxy"]["incoming_port"] %>
+listen <%= node["haproxy"]["service_name"] %> 0.0.0.0:<%= node["haproxy"]["incoming_port"] %>
   balance  <%= node["haproxy"]["balance_algorithm"] %>
 <% node['haproxy']['member_ports'].each do |port| -%>
   server localhost 127.0.0.1:<%= port %> weight 1 maxconn <%= node["haproxy"]["member_max_connections"] %> check
