@@ -15,11 +15,6 @@ gdash_dashboard "Disk" do
   description "System Disk Metrics"
 end
 
-gdash_dashboard "Chef Metrics" do
-  category "Chef"
-  description "Chef and Deployment Metrics"
-end
-
 gdash_dashboard "Demo Stack" do
   category "Application"
   description "Application Metrics"
@@ -91,11 +86,29 @@ gdash_dashboard_component "disk_usage" do
   dashboard_name "Disk"
   dashboard_category "System"
   ymin 0
+  ymax 100
   vtitle "% Used"
+  lines [
+    {
+      :caption => "Warning",
+      :value => 85,
+      :color => "orange",
+      :dashed => true
+    },
+    {
+      :caption => "Critical",
+      :value => 95,
+      :color => "red"
+    }
+  ]
   fields(
-    :usage => {
-      :data => "*.disk.*.capacity",
-      :alias => "Disk Usage"
+    :xvda1 => {
+      :data => "*.disk.xvda1.capacity",
+      :alias => "xvda1"
+    },
+    :xvdb => {
+      :data => "*.disk.xvdb.capacity",
+      :alias => "xvdb"
     }
   )
 end
@@ -118,9 +131,13 @@ gdash_dashboard_component "b_requests_per_minute" do
   dashboard_name "Demo Stack"
   dashboard_category "Application"
   ymin 0
-  draw_null_as_zero true
   area :stacked
   fields(
+    :deploy => {
+      :data => "drawAsInfinite(chef.*.demo_stack_deploy)",
+      :color => "blue",
+      :alias => "Demo Stack Deploy"
+    },
     :errors => {
       :data => "sumSeries(summarize(api.request.*.*.5*, '1min'))",
       :color => "red",

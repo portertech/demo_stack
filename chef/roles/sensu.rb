@@ -11,5 +11,6 @@ override_attributes :sensu => {
   :dashboard => {
     :host => "localhost",
     :password => "secret"
-  }
+  },
+  :sudoers => true
 }

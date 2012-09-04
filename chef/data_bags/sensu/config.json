@@ -57,13 +57,21 @@
       ],
       "interval": 60
     },
-    "demo_stack_haproxy": {
+    "check_haproxy_demo_stack": {
       "notification": "haproxy listeners are down",
       "command": "sudo -u root /etc/sensu/plugins/check-haproxy.rb -s demo_stack -w 60",
       "subscribers": [
         "demo_stack"
       ],
       "interval": 20
+    },
+    "check_data_disk_usage":{
+      "notifications": "a disk is almost full",
+      "command": "check-data.rb -s localhost:9001 -t 'highestCurrent(*.disk.*.capacity,1)' -w 85 -c 95 -a 120",
+      "subscribers": [
+        "graphite_server"
+      ],
+      "interval": 60
     },
     "cpu_usage_metrics": {
       "type": "metric",

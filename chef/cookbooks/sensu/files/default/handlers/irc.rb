@@ -51,7 +51,7 @@ class IRC < Sensu::Handler
     end
 
     begin
-      timeout(10) do
+      timeout(20) do
         CarrierPigeon.send(params)
         puts 'irc -- sent alert for ' + event_name + ' to IRC.'
       end
