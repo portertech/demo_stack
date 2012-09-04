@@ -40,6 +40,14 @@ file node.demo_stack.log do
   mode 0755
 end
 
+ruby_block "create_deploy_metric" do
+  block do
+    node.run_state[:metrics] ||= Hash.new
+    node.run_state[:metrics][:demo_stack_deploy] = 1
+  end
+  action :nothing
+end
+
 remote_file current_release do
   source "https://github.com/downloads/portertech/demo_stack/#{jar_file}"
   mode 0755
@@ -48,6 +56,7 @@ end
 
 link File.join(node.demo_stack.directory, "demo_stack.jar") do
   to current_release
+  notifies :create, "ruby_block[create_deploy_metric]", :immediately
   notifies :restart, "bluepill_service[demo_stack]", :delayed
 end
 
