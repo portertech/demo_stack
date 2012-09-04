@@ -57,6 +57,14 @@
       ],
       "interval": 60
     },
+    "demo_stack_haproxy": {
+      "notification": "haproxy listeners are down",
+      "command": "sudo -u root /etc/sensu/plugins/check-haproxy.rb -s demo_stack -w 45",
+      "subscribers": [
+        "demo_stack"
+      ],
+      "interval": 30
+    },
     "cpu_usage_metrics": {
       "type": "metric",
       "handler": "graphite",

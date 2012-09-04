@@ -25,7 +25,9 @@ end
 # eg. node.sensu.client.foo = "bar"
 # eg. gem_package "spice"
 
-gem_package "carrier-pigeon"
+%w[carrier-pigeon haproxy].each do |gem|
+  gem_package gem
+end
 
 cookbook_file "/usr/local/bin/sensu-stdin-metrics-client.rb" do
   mode "755"

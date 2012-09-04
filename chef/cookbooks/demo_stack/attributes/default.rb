@@ -4,6 +4,8 @@ default.demo_stack.user = "demo_stack"
 default.demo_stack.log = "/var/log/demo_stack.log"
 default.demo_stack.ports = [4000, 4001]
 
+override.sensu.sudoers = true
+
 override.bluepill.bin = "/usr/local/bin/bluepill"
 
 override.haproxy.service_name = "demo_stack"
